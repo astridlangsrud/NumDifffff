@@ -14,7 +14,7 @@ c_0 = 54
 mu = 600
 f_up = 1948
 f_rmp = 121
-ro_up = 20
+rho_up = 20
 
 def q(t):
     if t<10:
@@ -40,8 +40,8 @@ def f_u(U,m):
 
 u = np.zeros([2,len(x)])
 u_next = np.zeros([2,len(x)])
-initial_velocity = V_ro(ro_up)
-u[0,:] = ro_up
+initial_velocity = V_ro(rho_up)
+u[0,:] = rho_up
 u[1,:] = initial_velocity
 for n in range(1000):
     #print(u)
