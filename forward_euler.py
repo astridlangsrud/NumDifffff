@@ -34,8 +34,8 @@ def b(U,m,n):
     return np.array([u1, u2])
 
 def f_u(U,m):
-    u1 = ((U[0][m+1]-U[0][m])/h)*U[1][m]+((U[1][m+1]-U[1][m])/h)*U[0][m]
-    u2 = U[1][m]*((U[1][m+1]-U[1][m])/h)
+    u1 = ((U[0,m+1]-U[0,m])/h)*U[1,m]+((U[1,m+1]-U[1,m])/h)*U[0,m]
+    u2 = U[1,m]*((U[1,m+1]-U[1,m])/h)
     return np.array([u1,u2])
 
 u = np.zeros([2,len(x)])
@@ -46,9 +46,9 @@ u[1,:] = initial_velocity
 for n in range(1000):
     #print(u)
     for m in range(len(x)-1):
-        b_next = b(u,x[m],n*k)
+        b_next = b(u,m,n)
         f_next = f_u(u,m)
-        u_next[0,m] = u[0,x[m]]+k*(b_next[0]-f_next[1])
-        u_next[1, m] = u[1,x[m]]+k*(b_next[0]-f_next[1])
+        u_next[0,m] = u[0,m]+k*(b_next[0]-f_next[0])
+        u_next[1, m] = u[1,m]+k*(b_next[1]-f_next[1])
         u = u_next
 print(u)
