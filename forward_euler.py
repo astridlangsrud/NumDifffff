@@ -8,7 +8,7 @@ x = np.linspace(-L/2,L/2,int(L/h)+1)
 sigma = 0.054
 tau = 30
 V_0 = 120
-ro_hat = 120
+rho_hat = 120
 E = 100
 c_0 = 54
 mu = 600
@@ -26,7 +26,7 @@ def phi(x):
     return 2*np.pi*(sigma**2)*np.exp(-(x**2)/(2*(sigma**2)))
 
 def V_ro(ro):
-    return V_0*(1-(ro/ro_hat))/(1+E*((ro/ro_hat)**4))
+    return V_0*(1-(ro/rho_hat))/(1+E*((ro/rho_hat)**4))
 
 def b(U,m,n):
     u1 = q(n*k)*phi(m*h)
