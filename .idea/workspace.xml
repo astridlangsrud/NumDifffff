@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9dfb9970-82b0-4415-95b5-cf89ee12a778" name="Default" comment="Endra ro_up til rho_up">
+    <list default="true" id="9dfb9970-82b0-4415-95b5-cf89ee12a778" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/forward_euler.py" afterPath="$PROJECT_DIR$/forward_euler.py" />
     </list>
@@ -20,10 +20,22 @@
       <file leaf-file-name="forward_euler.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/forward_euler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="16" column="37" lean-forward="false" selection-start-line="16" selection-start-column="37" selection-end-line="16" selection-end-column="37" />
+            <state relative-caret-position="78">
+              <caret line="38" column="18" lean-forward="false" selection-start-line="38" selection-start-column="18" selection-end-line="38" selection-end-column="18" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Øving-4.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Øving-4.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="e#52#1866#1" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -271,7 +283,14 @@
       <option name="project" value="LOCAL" />
       <updated>1520265346559</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="La til kommentarer">
+      <created>1520323359946</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1520323359946</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -319,7 +338,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Endra ro_hat til rho_hat" />
     <MESSAGE value="Endra ro_up til rho_up" />
-    <option name="LAST_COMMIT_MESSAGE" value="Endra ro_up til rho_up" />
+    <MESSAGE value="La til kommentarer" />
+    <option name="LAST_COMMIT_MESSAGE" value="La til kommentarer" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -347,10 +367,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Øving-4.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#52#1866#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/forward_euler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="37" lean-forward="false" selection-start-line="16" selection-start-column="37" selection-end-line="16" selection-end-column="37" />
+        <state relative-caret-position="78">
+          <caret line="38" column="18" lean-forward="false" selection-start-line="38" selection-start-column="18" selection-end-line="38" selection-end-column="18" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
