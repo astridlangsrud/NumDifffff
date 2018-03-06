@@ -35,20 +35,19 @@ def f_u(U,m):
     u2 = 1/2*U[1,m]**2 + c_0**2*np.log(U[0,m])
     return np.array([u1,u2])
 
-u = np.zeros([2,len(x)]) #2 x M
-u_next = np.zeros([2,len(x)])
+u = np.zeros([2,len(x)+1]) #2 x M
+u_next = np.zeros([2,len(x)+1])
 initial_velocity = V_ro(rho_up)
 u[0,:] = rho_up
 u[1,:] = initial_velocity
-for n in range(10):
+for n in range(2):
     u[:,len(x)] = u[:,len(x)-1]
+    u[:,0] = u[:,1]
     for m in range(1,len(x)-1):
         s_next = s(u,m,n)
-        f_next = f_u(u,m)
         f_next_m1 = f_u(u,m-1) #m-1
         f_next_p1 = f_u(u,m+1) #m+1
         #print(u[0,1:10])
         u_next[0,m] = (u[0,m-1]+ u[0,m+1])/2 -k/(2*h)*(f_next_p1[0]-f_next_m1[0])+k*s_next[0]
         u_next[1,m] = (u[1,m-1]+ u[1,m+1])/2 -k/(2*h)*(f_next_p1[1]-f_next_m1[1])+k*s_next[1]
     u = u_next
-print(u)
