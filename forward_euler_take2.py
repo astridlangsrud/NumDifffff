@@ -25,10 +25,23 @@ def q(t):
 def phi(x):
     return 2*np.pi*(sigma**2)*np.exp(-(x**2)/(2*(sigma**2)))
 
-def b(U,n):
+def dx_forward_difference(U):
+    Udx = np.zeros[len(x)]
+    for i in range(len(x)):
+        Udx[i] = (U[m+1]-U[m])/h
+    return Udx
 
-    u1 = q(n*k)*phi(m*h)
-    u2 = ((V_ro(U[0,m])-U[1,m])/tau)-(((c_0**2)*((U[0,m+1]-U[0,m])/h))-mu*(U[1,m+1]-2*U[1,m]+U[1,m-1])/(h*h))/U[0,m]
+def dxx_central_differences(U):
+    Uddx = np.zeros[len(x)]
+
+    for m in range(len(x)):
+        Udx[m] = (U[m + 1] - 2*U[m] + U[m-1]) / (h*h)
+    return Udx
+def b(U,n):
+    rho_dx = dx_forward_difference(U[0])
+    vel_dx = forward_difference(U[1])
+    u1 = q(n*k)*phi(x[:])
+    u2 = ((V_ro(U[0,:])-U[1,:])/tau)-(((c_0**2)*rho_dx[:])-mu*(U[1,m+1]-2*U[1,m]+U[1,m-1])/(h*h))/U[0,m]
     return np.array([u1, u2])
 """
 u = np.zeros([2,len(x)]) #2 x M
