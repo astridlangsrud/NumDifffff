@@ -18,7 +18,7 @@ rho_up = 20 # density before the ramp
 
 
 def q(t):
-    return 121
+    return f_rmp
 
 def phi(x):
     return 2*np.pi*(sigma**2)*np.exp(-(x**2)/(2*(sigma**2)))
