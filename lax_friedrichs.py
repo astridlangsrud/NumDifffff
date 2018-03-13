@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 h = 0.0037
-k = 0.00001
+k = 0.001
 L = 10
 x = np.linspace(-L/2,L/2,int(L/h)+1)
 sigma = 0.054
@@ -33,7 +33,7 @@ def s(U,m,n):
 
 def f_u(U,m):
     u1 = U[0,m]*U[1,m]
-    u2 = 1/2*(U[1,m]**2) + (c_0**2)*np.log(U[0,m])
+    u2 = (1/2)*(U[1,m]**2) + (c_0**2)*np.log(U[0,m])
     return np.array([u1,u2])
 
 u = np.zeros([2,len(x)+1]) #2 x M

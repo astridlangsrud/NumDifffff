@@ -2,9 +2,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 h = 0.037
+<<<<<<< Updated upstream
 k = 0.0001
+=======
+k = 10**(-4)
+>>>>>>> Stashed changes
 L = 10
-x = np.linspace(-L/2,L/2,int(L/h)+1)
+x = np.linspace(-L/2, L/2, int(L/h)+1)
 sigma = 0.054
 tau = 1/120
 V_0 = 120
