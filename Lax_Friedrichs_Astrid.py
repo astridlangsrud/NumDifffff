@@ -14,14 +14,15 @@ c_0 = 54
 mu = 600
 f_up = 1948
 f_rmp = 121
+f_rmp = 121
 rho_up = 20
-N = 1000000
+N = 50000
 
 def q(t):
-    return 121*10
+    return 121*100
 
 def phi(x):
-    return 2*np.pi*(sigma**2)*np.exp(-(x**2)/(2*(sigma**2)))
+    return ((2*np.pi*(sigma**2))**(-1/2))*np.exp(-(x**2)/(2*(sigma**2)))
 
 def V_ro(ro):
     return V_0*(1-(ro/rho_hat))/(1+E*((ro/rho_hat)**4))
@@ -44,6 +45,7 @@ u[1,:] = initial_velocity
 u_next[0,:] = rho_up
 u_next[1,:] = initial_velocity
 for n in range(N):
+    print(n)
     #u[:,len(x)] = u[:,len(x)-1]
     #u[:,0] = u[:,1]
     for m in range(1,len(x)-1):
@@ -51,7 +53,7 @@ for n in range(N):
         f_next_m1 = f_u(u,m-1) #m-1
         f_next_p1 = f_u(u,m+1) #m+1
         u_next[0,m] = ((u[0,m-1]+ u[0,m+1])/2) -(k/(2*h))*(f_next_p1[0]-f_next_m1[0])+(k*s_next[0])
-        u_next[1,m] = ((u[1,m-1]+ u[1,m+1])/2) -(k/(2*h))*(f_next_p1[1]-f_next_m1[1])+(k*s_next[1])
+        u_next[1,m] = ((u[1,m-1]+ u[1,m+1])/2) -(k/(2*h))*(f_next_p1[1]-f_next_m1[1])+(k*s_next[1]) + ((k/(h**2))*(u[1,m+1]-2*u[1,m]+u[1,m-1]))
 
         #print(((u[0, m - 1] + u[0, m + 1]) / 2), (k / (2 * h)) * (f_next_p1[0] - f_next_m1[0]), (k * s_next[0]))
         #print(((u[1,m-1]+ u[1,m+1])/2),(k/(2*h))*(f_next_p1[1]-f_next_m1[1]),(k*s_next[1]))
