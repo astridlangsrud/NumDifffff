@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 h = 0.037
-k = 0.0001
+k = 0.001
 L = 10
 x = np.linspace(-L/2,L/2,int(L/h)+1)
 sigma = 0.054
@@ -15,7 +15,7 @@ mu = 600
 f_up = 1948
 f_rmp = 121
 rho_up = 20
-N = 10000
+N = 100
 
 def q(t):
     return 121*100
