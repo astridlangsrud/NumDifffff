@@ -2,9 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 h = 0.037
-k = 0.0001
+k = 10**(-4)
 L = 10
-x = np.linspace(-L/2,L/2,int(L/h)+1)
+x = np.linspace(-L/2, L/2, int(L/h)+1)
 sigma = 0.054
 tau = 1/120
 V_0 = 120
@@ -19,6 +19,7 @@ N = 1000000
 
 def q(t):
     return 121*10
+
 
 def phi(x):
     return 2*np.pi*(sigma**2)*np.exp(-(x**2)/(2*(sigma**2)))

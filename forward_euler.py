@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 h = 0.0037 # step-length in x-direction
 k = 10**(-7) # time-step
-N = 100 # number of time-steps
+N = 10**7 # number of time-steps
 L = 10 # length of highway
 x = np.linspace(-L/2, L/2, int(L/h)+1) # points along the highway
 sigma = 0.054
@@ -19,7 +19,7 @@ rho_up = 20 # density before the ramp
 
 
 def q(t):
-    return f_rmp
+    return f_rmp*3600
 
 def phi(x):
     return 2*np.pi*(sigma**2)*np.exp(-(x**2)/(2*(sigma**2)))
@@ -60,9 +60,7 @@ def forward_euler(k, N):
 
 if __name__ == "__main__":
     u = forward_euler(k, N)
-    for i in range(len(u[0])):
-        if u[0,i] < 10:
-            print(i)
+    print(u[0][1:100])
     #print(len(x[:-1]))
     plt.plot(x[:-1], u[0][:-1])
     plt.show()
