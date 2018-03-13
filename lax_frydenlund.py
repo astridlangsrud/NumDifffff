@@ -1,8 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-h = 0.0037
-k = 0.00001
+h = 0.037
+k = 0.0001
 L = 10
 x = np.linspace(-L/2,L/2,int(L/h)+1)
 sigma = 0.054
@@ -18,7 +18,7 @@ rho_up = 20
 N = 10000
 
 def q(t):
-    return 121
+    return 121*100
 
 def phi(x):
     return 2*np.pi*(sigma**2)*np.exp(-(x**2)/(2*(sigma**2)))
