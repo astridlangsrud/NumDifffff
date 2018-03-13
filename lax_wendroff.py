@@ -1,8 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-h = 0.0037
-k = 0.00001
+h = 0.037
+k = 0.0001
 L = 10
 x = np.linspace(-L/2,L/2,int(L/h)+1)
 sigma = 0.054
@@ -18,7 +18,7 @@ rho_up = 20
 N = 10000
 
 def q(t):
-    return 121
+    return 121*100
 
 def phi(x):
     return 2*np.pi*(sigma**2)*np.exp(-(x**2)/(2*(sigma**2)))
@@ -53,6 +53,10 @@ for n in range(N):
         u_next[0,m] = ((u[0,m-1]+ u[0,m+1])/2) -(k/(2*h))*(f_next_p1[0]-f_next_m1[0])+(k*s_next[0])
         u_next[1,m] = ((u[1,m-1]+ u[1,m+1])/2) -(k/(2*h))*(f_next_p1[1]-f_next_m1[1])+(k*s_next[1])
 
+        
+        u_next[0,m] = ((u[0,m-1]+ u[0,m+1])/2) -(k/(2*h))*(f_next_p1[0]-f_next_m1[0])+(k*s_next[0])
+        u_next[1,m] = ((u[1,m-1]+ u[1,m+1])/2) -(k/(2*h))*(f_next_p1[1]-f_next_m1[1])+(k*s_next[1])
+        
         #print(((u[0, m - 1] + u[0, m + 1]) / 2), (k / (2 * h)) * (f_next_p1[0] - f_next_m1[0]), (k * s_next[0]))
         #print(((u[1,m-1]+ u[1,m+1])/2),(k/(2*h))*(f_next_p1[1]-f_next_m1[1]),(k*s_next[1]))
     u_next[0,0] = rho_up
