@@ -14,12 +14,11 @@ c_0 = 54
 mu = 600
 f_up = 1948
 f_rmp = 121
-f_rmp = 121
 rho_up = 20
-N = 50000
+N = 10000
 
 def q(t):
-    return 121*100
+    return 121
 
 def phi(x):
     return ((2*np.pi*(sigma**2))**(-1/2))*np.exp(-(x**2)/(2*(sigma**2)))
@@ -28,7 +27,8 @@ def V_ro(ro):
     return V_0*(1-(ro/rho_hat))/(1+E*((ro/rho_hat)**4))
 
 def s(U,m,n):
-    u1 = q(n*k)*phi(m*h)
+    u1 = q(n*k)*phi((m*h)-(L/2))
+    print(phi((m*h)-(L/2)))
     u2 = ((V_ro(U[0,m])-U[1,m])/tau)
     return np.array([u1, u2])
 

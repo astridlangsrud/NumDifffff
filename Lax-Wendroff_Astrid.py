@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 h = 0.037
-k = 0.001
+k = 0.0001
 L = 10
 x = np.linspace(-L/2,L/2,int(L/h)+1)
 sigma = 0.054
@@ -15,7 +15,7 @@ mu = 600
 f_up = 1948
 f_rmp = 121
 rho_up = 20
-N = 10000
+N = 1000
 
 def q(t):
     return 121*100
@@ -27,7 +27,7 @@ def V_ro(ro):
     return V_0*(1-(ro/rho_hat))/(1+E*((ro/rho_hat)**4))
 
 def s(U,m,n):
-    u1 = q(n*k)*phi(m*h)
+    u1 = q(n*k)*phi((m*h)-(L/2))
     u2 = ((V_ro(U[0,m])-U[1,m])/tau)
     return np.array([u1, u2])
 
@@ -47,6 +47,7 @@ u[1,:] = initial_velocity
 u_next[0,:] = rho_up
 u_next[1,:] = initial_velocity
 for n in range(N):
+    print(n)
     #u[:,len(x)] = u[:,len(x)-1]
     #u[:,0] = u[:,1]
     for m in range(1,len(x)-1):
