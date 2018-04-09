@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+"""
 h = 0.037
 k = 0.001
 L = 10
@@ -16,10 +16,25 @@ f_up = 1948
 f_rmp = 121
 rho_up = 20
 N = 500
-
+"""
+h = 37.8
+k = 0.0001
+L = 10000
+x = np.linspace(-L/2,L/2,int(L/h)+1)
+sigma = 56.7
+tau = 0.5
+V_0 = 2000
+rho_hat = 0.14
+E = 100
+c_0 = 900
+mu = 10000
+f_up = 32.5
+f_rmp = 3.7
+rho_up = 0.02
+N = 10000
 
 def q(t):
-    return 121 * 100
+    return 121
 
 
 def phi(x):
@@ -31,15 +46,20 @@ def V_ro(ro):
 
 
 def s(U, m, n):
-    u1 = q(n * k) * phi(m * h)
-    u2 = ((V_ro(U[0, m]) - U[1, m]) / tau)
+    u1 = [0]*(len(x)-1)
+    u2 = [0]*(len(x)-1)
+    for i in range(1,len(x)-1):
+        u1[i] = q(n*k) * phi((m[i]*h)-(L/2))
+        u2[i] = ((V_ro(U[0, m[i]]) - U[1, m[i]]) / tau)
     return np.array([u1, u2])
 
 
 def f_u(U, m):
     u1 = U[0, m] * U[1, m]
-    u2 = 1 / 2 * (U[1, m] ** 2) + (c_0 ** 2) * np.log(U[0, m])
+    u2 = (1/2)*(U[1, m]**2) + (c_0**2)*np.log(U[0, m])
     return np.array([u1, u2])
+
+
 m_vec = np.linspace(1, len(x)-1, len(x)-1)
 print(m_vec)
 u = np.zeros([2, len(x) + 1])  # 2 x M
