@@ -15,20 +15,22 @@ mu = 600
 f_up = 1948
 f_rmp = 121
 rho_up = 20
-N = 100
+N = 10000
 
 def q(t):
     return 121
 
 def phi(x):
-    return ((2*np.pi*(sigma**2))**(-1/2))*np.exp(-(x**2)/(2*(sigma**2)))
+    phii = [0]*(len(x)-2)
+    for m in range(1,len(x)-1):
+        phii[m] = ((2*np.pi*(sigma**2))**(-1/2))*np.exp(-(x[m]**2)/(2*(sigma**2)))
+    return phii
 
 def V_ro(ro):
     return V_0*(1-(ro/rho_hat))/(1+E*((ro/rho_hat)**4))
 
 def s(U,m,n):
     u1 = q(n*k)*phi((m*h)-(L/2))
-    print(phi((m*h)-(L/2)))
     u2 = ((V_ro(U[0,m])-U[1,m])/tau)
     return np.array([u1, u2])
 
@@ -45,27 +47,16 @@ u[1,:] = initial_velocity
 u_next[0,:] = rho_up
 u_next[1,:] = initial_velocity
 for n in range(N):
-    print(n)
-    #u[:,len(x)] = u[:,len(x)-1]
-    #u[:,0] = u[:,1]
     f = f_u(u, range(1,len(x)+1))
-    print(f)
-    print(len(f[1]))
+    s_next = s(u, range(1,len(x)+1),n)
     for m in range(1,len(x)-1):
-        s_next = s(u,m,n)
-        #f_next_m1 = f_u(u,m-1) #m-1
-        #f_next_p1 = f_u(u,m+1) #m+1
-        u_next[0,m] = ((u[0,m-1]+ u[0,m+1])/2) -(k/(2*h))*(f[0,m+1]-f[0,m-1])+(k*s_next[0])
-        u_next[1,m] = ((u[1,m-1]+ u[1,m+1])/2) -(k/(2*h))*(f[1,m+1]-f[1,m-1])+(k*s_next[1]) + ((k/(h**2))*(u[1,m+1]-2*u[1,m]+u[1,m-1]))
-
-        #print(((u[0, m - 1] + u[0, m + 1]) / 2), (k / (2 * h)) * (f_next_p1[0] - f_next_m1[0]), (k * s_next[0]))
-        #print(((u[1,m-1]+ u[1,m+1])/2),(k/(2*h))*(f_next_p1[1]-f_next_m1[1]),(k*s_next[1]))
+        #s_next = s(u,m,n)
+        u_next[0,m] = ((u[0,m-1]+ u[0,m+1])/2) -(k/(2*h))*(f[0,m+1]-f[0,m-1])+(k*s_next[0,m])
+        u_next[1,m] = ((u[1,m-1]+ u[1,m+1])/2) -(k/(2*h))*(f[1,m+1]-f[1,m-1])+(k*s_next[1,m]) + ((k/(h**2))*(u[1,m+1]-2*u[1,m]+u[1,m-1]))
     u_next[0,0] = rho_up
     u_next[1,0] = initial_velocity
     u_next[:, len(x)] = u_next[:, len(x) - 1]
     u = u_next
-    #u[:, len(x)] = u[:, len(x) - 1]
-    #u[:, 0] = u[:, 1]
 
 plt.plot(x,u[0][:-1])
 plt.show()
