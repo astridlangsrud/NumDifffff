@@ -2,13 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 h = 0.037
-<<<<<<< HEAD
 k = 0.0001
-=======
-k = 10**(-4)
->>>>>>> origin/master
 L = 10
-x = np.linspace(-L/2, L/2, int(L/h)+1)
+
+x = np.linspace(-L/2,L/2,int(L/h)+1)
 sigma = 0.054
 tau = 1/120
 V_0 = 120
@@ -19,24 +16,20 @@ mu = 600
 f_up = 1948
 f_rmp = 121
 rho_up = 20
-<<<<<<< HEAD
-N = 3000
-=======
-N = 1000000
->>>>>>> origin/master
+N = 100
 
 def q(t):
-    return 121*10
-
+    return 121
 
 def phi(x):
-    return 1/(2*np.pi*(sigma**2))*np.exp(-(x**2)/(2*(sigma**2)))
+    return ((2*np.pi*(sigma**2))**(-1/2))*np.exp(-(x**2)/(2*(sigma**2)))
 
 def V_ro(ro):
     return V_0*(1-(ro/rho_hat))/(1+E*((ro/rho_hat)**4))
 
 def s(U,m,n):
-    u1 = q(n*k)*phi(m*h)
+    u1 = q(n*k)*phi((m*h)-(L/2))
+    #print(phi((m*h)-(L/2)))
     u2 = ((V_ro(U[0,m])-U[1,m])/tau)
     return np.array([u1, u2])
 
@@ -53,14 +46,15 @@ u[1,:] = initial_velocity
 u_next[0,:] = rho_up
 u_next[1,:] = initial_velocity
 for n in range(N):
+    #print(n)
     #u[:,len(x)] = u[:,len(x)-1]
     #u[:,0] = u[:,1]
-    for m in range(1, len(x)-1):
+    for m in range(1,len(x)-1):
         s_next = s(u,m,n)
         f_next_m1 = f_u(u,m-1) #m-1
         f_next_p1 = f_u(u,m+1) #m+1
         u_next[0,m] = ((u[0,m-1]+ u[0,m+1])/2) -(k/(2*h))*(f_next_p1[0]-f_next_m1[0])+(k*s_next[0])
-        u_next[1,m] = ((u[1,m-1]+ u[1,m+1])/2) -(k/(2*h))*(f_next_p1[1]-f_next_m1[1])+(k*s_next[1])
+        u_next[1,m] = ((u[1,m-1]+ u[1,m+1])/2) -(k/(2*h))*(f_next_p1[1]-f_next_m1[1])+(k*s_next[1]) + ((k/(h**2))*(u[1,m+1]-2*u[1,m]+u[1,m-1]))
 
         #print(((u[0, m - 1] + u[0, m + 1]) / 2), (k / (2 * h)) * (f_next_p1[0] - f_next_m1[0]), (k * s_next[0]))
         #print(((u[1,m-1]+ u[1,m+1])/2),(k/(2*h))*(f_next_p1[1]-f_next_m1[1]),(k*s_next[1]))
