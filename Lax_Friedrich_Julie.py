@@ -1,10 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-h = 0.37
-k = 0.01
+h = 0.037
+k = 0.0001
 L = 10
-
 x = np.linspace(-L/2,L/2,int(L/h)+1)
 sigma = 0.054
 tau = 1/120
@@ -29,7 +28,7 @@ def V_ro(ro):
 
 def s(U,m,n):
     u1 = q(n*k)*phi((m*h)-(L/2))
-    #print(phi((m*h)-(L/2)))
+    print(phi((m*h)-(L/2)))
     u2 = ((V_ro(U[0,m])-U[1,m])/tau)
     return np.array([u1, u2])
 
@@ -46,15 +45,18 @@ u[1,:] = initial_velocity
 u_next[0,:] = rho_up
 u_next[1,:] = initial_velocity
 for n in range(N):
-    #print(n)
+    print(n)
     #u[:,len(x)] = u[:,len(x)-1]
     #u[:,0] = u[:,1]
+    f = f_u(u, range(1,len(x)+1))
+    print(f)
+    print(len(f[1]))
     for m in range(1,len(x)-1):
         s_next = s(u,m,n)
-        f_next_m1 = f_u(u,m-1) #m-1
-        f_next_p1 = f_u(u,m+1) #m+1
-        u_next[0,m] = ((u[0,m-1]+ u[0,m+1])/2) -(k/(2*h))*(f_next_p1[0]-f_next_m1[0])+(k*s_next[0])
-        u_next[1,m] = ((u[1,m-1]+ u[1,m+1])/2) -(k/(2*h))*(f_next_p1[1]-f_next_m1[1])+(k*s_next[1]) + ((k/(h**2))*(u[1,m+1]-2*u[1,m]+u[1,m-1]))
+        #f_next_m1 = f_u(u,m-1) #m-1
+        #f_next_p1 = f_u(u,m+1) #m+1
+        u_next[0,m] = ((u[0,m-1]+ u[0,m+1])/2) -(k/(2*h))*(f[0,m+1]-f[0,m-1])+(k*s_next[0])
+        u_next[1,m] = ((u[1,m-1]+ u[1,m+1])/2) -(k/(2*h))*(f[1,m+1]-f[1,m-1])+(k*s_next[1]) + ((k/(h**2))*(u[1,m+1]-2*u[1,m]+u[1,m-1]))
 
         #print(((u[0, m - 1] + u[0, m + 1]) / 2), (k / (2 * h)) * (f_next_p1[0] - f_next_m1[0]), (k * s_next[0]))
         #print(((u[1,m-1]+ u[1,m+1])/2),(k/(2*h))*(f_next_p1[1]-f_next_m1[1]),(k*s_next[1]))
