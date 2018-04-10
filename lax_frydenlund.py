@@ -2,11 +2,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 h = 0.037
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 k = 0.0001
 =======
 k = 10**(-4)
 >>>>>>> origin/master
+=======
+<<<<<<< Updated upstream
+k = 10**(-4)
+=======
+k = 0.0001
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 L = 10
 x = np.linspace(-L/2, L/2, int(L/h)+1)
 sigma = 0.054
@@ -16,8 +24,10 @@ rho_hat = 120
 E = 100
 c_0 = 54
 mu = 600
-f_up = 1948
+rho_up = 22
+f_up = V_0*(1-(rho_up/rho_hat))/(1+E*((rho_up/rho_hat)**4)) #1937
 f_rmp = 121
+<<<<<<< Updated upstream
 rho_up = 20
 <<<<<<< HEAD
 N = 3000
@@ -28,6 +38,13 @@ N = 1000000
 def q(t):
     return 121*10
 
+=======
+
+N = 1000
+
+def q(t):
+    return f_rmp*10
+>>>>>>> Stashed changes
 
 def phi(x):
     return 1/(2*np.pi*(sigma**2))*np.exp(-(x**2)/(2*(sigma**2)))

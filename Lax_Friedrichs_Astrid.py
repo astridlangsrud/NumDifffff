@@ -16,7 +16,15 @@ mu = 600
 f_up = 1948
 f_rmp = 121
 rho_up = 20
+<<<<<<< Updated upstream
 N = 100
+=======
+<<<<<<< Updated upstream
+N = 10000
+=======
+N = 1000
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
 def q(t):
     return 121
@@ -28,8 +36,16 @@ def V_ro(ro):
     return V_0*(1-(ro/rho_hat))/(1+E*((ro/rho_hat)**4))
 
 def s(U,m,n):
+<<<<<<< Updated upstream
     u1 = q(n*k)*phi((m*h)-(L/2))
+<<<<<<< Updated upstream
     #print(phi((m*h)-(L/2)))
+=======
+    print(phi((m*h)-(L/2)))
+=======
+    u1 = q(n*k)*phi(m*h-L/2)
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
     u2 = ((V_ro(U[0,m])-U[1,m])/tau)
     return np.array([u1, u2])
 
