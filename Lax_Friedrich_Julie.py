@@ -49,7 +49,7 @@ def s(U,m,n):
     u2 = [0]*(len(x)-1)
     for i in range(1, len(x)-1):
         u1[i] = q(n*k)*phi((m[i]*h)-(L/2))
-        u2[i] = ((V_ro(U[0,m[i]])-U[1,m[i]])/tau)
+        u2[i] = ((V_ro(U[0,m[i]]) - U[1,m[i]])/tau)
 
     return np.array([u1, u2])
 
