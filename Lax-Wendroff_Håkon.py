@@ -48,9 +48,13 @@ def V_ro(ro):
 def s(U, m, n):
     u1 = [0]*(len(x)-1)
     u2 = [0]*(len(x)-1)
+    print(len(x))
+    #print(len(u1))
     for i in range(1,len(x)-1):
+        #print(phi(m[i]*h-L/2))
+        #print(i)
         u1[i] = q(n*k)*phi((m[i]*h)-(L/2))
-        u2[i] = ((V_ro(U[0, m[i]]) - U[1, m[i]])/ tau)
+        u2[i] = ((V_ro(U[0, m[i]]) - U[1, m[i]])/tau)
     return np.array([u1, u2])
 
 

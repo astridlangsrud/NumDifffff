@@ -2,7 +2,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 h = 0.037
+<<<<<<< HEAD
+k = 0.0001
+=======
 k = 10**(-4)
+>>>>>>> origin/master
 L = 10
 x = np.linspace(-L/2, L/2, int(L/h)+1)
 sigma = 0.054
@@ -15,14 +19,18 @@ mu = 600
 f_up = 1948
 f_rmp = 121
 rho_up = 20
+<<<<<<< HEAD
+N = 3000
+=======
 N = 1000000
+>>>>>>> origin/master
 
 def q(t):
     return 121*10
 
 
 def phi(x):
-    return 2*np.pi*(sigma**2)*np.exp(-(x**2)/(2*(sigma**2)))
+    return 1/(2*np.pi*(sigma**2))*np.exp(-(x**2)/(2*(sigma**2)))
 
 def V_ro(ro):
     return V_0*(1-(ro/rho_hat))/(1+E*((ro/rho_hat)**4))
@@ -47,7 +55,7 @@ u_next[1,:] = initial_velocity
 for n in range(N):
     #u[:,len(x)] = u[:,len(x)-1]
     #u[:,0] = u[:,1]
-    for m in range(1,len(x)-1):
+    for m in range(1, len(x)-1):
         s_next = s(u,m,n)
         f_next_m1 = f_u(u,m-1) #m-1
         f_next_p1 = f_u(u,m+1) #m+1
