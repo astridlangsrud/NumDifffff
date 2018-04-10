@@ -66,13 +66,15 @@ for n in range(N):
 
 
 plt.plot(x,u[0][:-1])
-plt.show()
+#==============================================================================
+# plt.show()
+#==============================================================================
 
 
-
-
-def x_error(N,u, k):
-    k = 1 / (N - 1)
+def convergence(N,u, k):
+    
+    
+    '''k = 1 / (N - 1)
     y = np.linspace(0, 1, N)
     errors = []
     for i in range(2,P):
@@ -81,7 +83,7 @@ def x_error(N,u, k):
         z = exact_grid(N, M)
         solution = numerical(N, M)
         errors.append(np.sqrt(h*k)*np.linalg.norm(z[1:-1]-solution[1:-1],2))
-    return errors
+    return errors'''
 
 
 

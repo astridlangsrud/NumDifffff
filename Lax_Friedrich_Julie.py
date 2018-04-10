@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import readwrite as rw
 """
 h = 0.037
 k = 0.0001
@@ -19,7 +20,7 @@ N = 10000
 
 """
 h = 37.8
-k = 0.0001
+k = 10**-6
 L = 10000
 x = np.linspace(-L/2,L/2,int(L/h)+1)
 sigma = 56.7
@@ -32,10 +33,10 @@ mu = 10000
 f_up = 32.5
 f_rmp = 3.7
 rho_up = 0.02
-N = 10000
+N = 10**7
 
 def q(t):
-    return 121
+    return f_rmp
 
 def phi(x):
 
@@ -77,9 +78,13 @@ for n in range(N):
     u_next[1,0] = initial_velocity
     u_next[:, len(x)] = u_next[:, len(x) - 1]
     u = u_next
-    if (n%1000 == 0):
+    if (n%(N/10) == 0):
         plt.plot(x,u[0][:-1])
         plt.show()
+        
+rw.write_data(u,"u_lax_friedrich.txt")
+a = rw.read_data("u_lax_friedrich.txt")
+print(a)
 
-plt.plot(x,u[0][:-1])
-plt.show()
+#plt.plot(x,u[0][:-1])
+#plt.show()
