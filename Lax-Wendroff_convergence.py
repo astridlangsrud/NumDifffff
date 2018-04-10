@@ -1,25 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
-"""
-h = 0.037
-k = 0.0001
-L = 10
-x = np.linspace(-L/2,L/2,int(L/h)+1)
-sigma = 0.054
-tau = 1/120
-V_0 = 120
-rho_hat = 120
-E = 100
-c_0 = 54
-mu = 600
-f_up = 1948
-f_rmp = 121
-rho_up = 20
-N = 10000
 
-"""
 h = 37.8
-k = 0.0001
+k = 0.001 #0.0001
 L = 10000
 x = np.linspace(-L/2,L/2,int(L/h)+1)
 sigma = 56.7
@@ -77,9 +60,28 @@ for n in range(N):
     u_next[1,0] = initial_velocity
     u_next[:, len(x)] = u_next[:, len(x) - 1]
     u = u_next
-    if (n%1000 == 0):
+    '''if (n%1000 == 0):
         plt.plot(x,u[0][:-1])
-        plt.show()
+        plt.show()'''
+
 
 plt.plot(x,u[0][:-1])
 plt.show()
+
+
+
+
+def x_error(N,u, k):
+    k = 1 / (N - 1)
+    y = np.linspace(0, 1, N)
+    errors = []
+    for i in range(2,P):
+        M = 2**i
+        h = 1/(M-1)
+        z = exact_grid(N, M)
+        solution = numerical(N, M)
+        errors.append(np.sqrt(h*k)*np.linalg.norm(z[1:-1]-solution[1:-1],2))
+    return errors
+
+
+
