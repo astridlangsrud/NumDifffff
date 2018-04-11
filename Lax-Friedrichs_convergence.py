@@ -1,8 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import readwrite as rw
 
 h = 37.8
-k = 0.001 #0.0001
+#k = 10**-4
 L = 10000
 x = np.linspace(-L/2,L/2,int(L/h)+1)
 sigma = 56.7
@@ -13,9 +14,9 @@ E = 100
 c_0 = 900
 mu = 10000
 f_up = 32.5
-f_rmp = 3.7
+f_rmp = 2.166 #3.7
 rho_up = 0.02
-N = 10000
+#N = 10**5
 
 def q(t):
     return 121
@@ -41,49 +42,49 @@ def f_u(U,m):
     u2 = 1/2*(U[1,m]**2) + (c_0**2)*np.log(U[0,m])
     return np.array([u1,u2])
 
-u = np.zeros([2,len(x)+1]) #2 x M
-u_next = np.zeros([2,len(x)+1])
-initial_velocity = V_ro(rho_up)
-u[0,:] = rho_up
-u[1,:] = initial_velocity
-u_next[0,:] = rho_up
-u_next[1,:] = initial_velocity
-for n in range(N):
-
-    f = f_u(u, range(1,len(x)+1))
-    s_next = s(u, range(1,len(x)+1),n)
-
-    for m in range(1,len(x)-1):
-        u_next[0,m] = ((u[0,m-1]+ u[0,m+1])/2) -(k/(2*h))*(f[0,m+1]-f[0,m-1])+(k*s_next[0,m])
-        u_next[1,m] = ((u[1,m-1]+ u[1,m+1])/2) -(k/(2*h))*(f[1,m+1]-f[1,m-1])+(k*s_next[1,m]) + ((k/(h**2))*(u[1,m+1]-2*u[1,m]+u[1,m-1]))
-    u_next[0,0] = rho_up
-    u_next[1,0] = initial_velocity
-    u_next[:, len(x)] = u_next[:, len(x) - 1]
-    u = u_next
-    '''if (n%1000 == 0):
-        plt.plot(x,u[0][:-1])
-        plt.show()'''
 
 
-plt.plot(x,u[0][:-1])
-#==============================================================================
-# plt.show()
-#==============================================================================
 
-
-def convergence(N,u, k):
+a = -1
+b = 12
+error = np.zeros(b-a)
+k_vec = np.zeros(b-a)
+ref = rw.read_data("ber1.txt")
+for i in range(a,b): #16
+    k = 2**(-i)
+    N = int(10/k)
     
+    u = np.zeros([2,len(x)+1]) #2 x M
+    u_next = np.zeros([2,len(x)+1])
+    initial_velocity = V_ro(rho_up)
+    u[0,:] = rho_up
+    u[1,:] = initial_velocity
+    u_next[0,:] = rho_up
+    u_next[1,:] = initial_velocity
+    for n in range(N):
     
-    '''k = 1 / (N - 1)
-    y = np.linspace(0, 1, N)
-    errors = []
-    for i in range(2,P):
-        M = 2**i
-        h = 1/(M-1)
-        z = exact_grid(N, M)
-        solution = numerical(N, M)
-        errors.append(np.sqrt(h*k)*np.linalg.norm(z[1:-1]-solution[1:-1],2))
-    return errors'''
+        f = f_u(u, range(1,len(x)+1))
+        s_next = s(u, range(1,len(x)+1),n)
+    
+        for m in range(1,len(x)-1):
+            u_next[0,m] = ((u[0,m-1]+ u[0,m+1])/2) -(k/(2*h))*(f[0,m+1]-f[0,m-1])+(k*s_next[0,m])
+            u_next[1,m] = ((u[1,m-1]+ u[1,m+1])/2) -(k/(2*h))*(f[1,m+1]-f[1,m-1])+(k*s_next[1,m]) + ((k/(h**2))*(u[1,m+1]-2*u[1,m]+u[1,m-1]))
+        u_next[0,0] = rho_up
+        u_next[1,0] = initial_velocity
+        u_next[:, len(x)] = u_next[:, len(x) - 1]
+        u = u_next
+    
+    error[i+1] = np.linalg.norm(np.subtract(ref[0,:],u[0,:]), 2)**np.sqrt(h)
+    k_vec[i+1] = k  
+plt.figure()
+plt.loglog(k_vec,error)
+plt.show()
+        
+        
+        
+        
+        
+
 
 
 

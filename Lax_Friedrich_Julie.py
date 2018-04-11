@@ -20,7 +20,7 @@ N = 10000
 
 """
 h = 37.8
-k = 10**-6
+k = 10**-4
 L = 10000
 x = np.linspace(-L/2,L/2,int(L/h)+1)
 sigma = 56.7
@@ -31,9 +31,9 @@ E = 100
 c_0 = 900
 mu = 10000
 f_up = 32.5
-f_rmp = 3.7
+f_rmp = 2.166 #3.7
 rho_up = 0.02
-N = 10**7
+N = 10**4
 
 def q(t):
     return f_rmp
