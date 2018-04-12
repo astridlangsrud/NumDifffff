@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import readwrite as rw
 """
 h = 0.037
 k = 0.0001
@@ -18,8 +19,8 @@ rho_up = 20
 N = 10000
 
 """
-h = 37.8
-k = 0.0001
+h = 3.78
+k = 10**-4
 L = 10000
 x = np.linspace(-L/2,L/2,int(L/h)+1)
 sigma = 56.7
@@ -30,12 +31,12 @@ E = 100
 c_0 = 900
 mu = 10000
 f_up = 32.5
-f_rmp = 3.7
+f_rmp = 2.166 #3.7
 rho_up = 0.02
-N = 10000
+N = 10**2
 
 def q(t):
-    return 121
+    return f_rmp
 
 def phi(x):
 
@@ -71,13 +72,19 @@ for n in range(N):
     s_next = s(u, range(1,len(x)+1),n)
 
     for m in range(1,len(x)-1):
-        #s_next = s(u,m,n)
         u_next[0,m] = ((u[0,m-1]+ u[0,m+1])/2) -(k/(2*h))*(f[0,m+1]-f[0,m-1])+(k*s_next[0,m])
-        u_next[1,m] = ((u[1,m-1]+ u[1,m+1])/2) -(k/(2*h))*(f[1,m+1]-f[1,m-1])+(k*s_next[1,m]) + ((k/(h**2))*(u[1,m+1]-2*u[1,m]+u[1,m-1]))
+        u_next[1,m] = ((u[1,m-1]+ u[1,m+1])/2) -(k/(2*h))*(f[1,m+1]-f[1,m-1])+(k*s_next[1,m]) #+ ((k/(h**2))*(u[1,m+1]-2*u[1,m]+u[1,m-1]))
     u_next[0,0] = rho_up
     u_next[1,0] = initial_velocity
     u_next[:, len(x)] = u_next[:, len(x) - 1]
     u = u_next
+    if (n%(N/10) == 0):
+        plt.plot(x,u[0][:-1])
+        plt.show()
+        
+rw.write_data(u,"u_lax_friedrich.txt")
+a = rw.read_data("u_lax_friedrich.txt")
+print(a)
 
-plt.plot(x,u[0][:-1])
-plt.show()
+#plt.plot(x,u[0][:-1])
+#plt.show()
