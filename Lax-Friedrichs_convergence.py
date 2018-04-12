@@ -45,7 +45,7 @@ def f_u(U,m):
 
 
 
-a = -1
+a = 9
 b = 12
 error = np.zeros(b-a)
 k_vec = np.zeros(b-a)
@@ -73,6 +73,9 @@ for i in range(a,b): #16
         u_next[1,0] = initial_velocity
         u_next[:, len(x)] = u_next[:, len(x) - 1]
         u = u_next
+        
+        plt.plot(x,u[0][:-1])
+        plt.show()
     
     error[i+1] = np.linalg.norm(np.subtract(ref[0,:],u[0,:]), 2)**np.sqrt(h)
     k_vec[i+1] = k  

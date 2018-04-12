@@ -19,7 +19,7 @@ rho_up = 20
 N = 10000
 
 """
-h = 37.8
+h = 3.78
 k = 10**-4
 L = 10000
 x = np.linspace(-L/2,L/2,int(L/h)+1)
@@ -33,7 +33,7 @@ mu = 10000
 f_up = 32.5
 f_rmp = 2.166 #3.7
 rho_up = 0.02
-N = 10**4
+N = 10**2
 
 def q(t):
     return f_rmp
@@ -73,7 +73,7 @@ for n in range(N):
 
     for m in range(1,len(x)-1):
         u_next[0,m] = ((u[0,m-1]+ u[0,m+1])/2) -(k/(2*h))*(f[0,m+1]-f[0,m-1])+(k*s_next[0,m])
-        u_next[1,m] = ((u[1,m-1]+ u[1,m+1])/2) -(k/(2*h))*(f[1,m+1]-f[1,m-1])+(k*s_next[1,m]) + ((k/(h**2))*(u[1,m+1]-2*u[1,m]+u[1,m-1]))
+        u_next[1,m] = ((u[1,m-1]+ u[1,m+1])/2) -(k/(2*h))*(f[1,m+1]-f[1,m-1])+(k*s_next[1,m]) #+ ((k/(h**2))*(u[1,m+1]-2*u[1,m]+u[1,m-1]))
     u_next[0,0] = rho_up
     u_next[1,0] = initial_velocity
     u_next[:, len(x)] = u_next[:, len(x) - 1]
