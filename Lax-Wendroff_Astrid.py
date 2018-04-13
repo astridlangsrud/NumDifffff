@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import readwrite
 
 h = 0.037
 k = 0.0001
@@ -72,7 +73,7 @@ for n in range(N):
     u = u_next
     #u[:, len(x)] = u[:, len(x) - 1]
     #u[:, 0] = u[:, 1]
-
+readwrite.write_data(u,"data.txt")
 plt.plot(x,u[0][:-1])
 plt.ylabel("Tetthet av biler")
 plt.xlabel("x")
