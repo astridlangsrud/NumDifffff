@@ -21,9 +21,11 @@ N = 10000
 
 """
 
-number_of_discretizations = 3
-h_values = [500, 1000, 5000]
-errors = np.zeros(number_of_discretizations) # The error between the estimated solution and the reference solution
+
+h_values = [40, 50, 100, 200, 400, 500, 1000, 2000, 4000, 5000]
+#h_values = [2000, 5000]
+number_of_discretizations = len(h_values)
+errors = np.zeros(number_of_discretizations) # The difference between the estimated solution and the reference solution
 
 
 ref_sol = rw.read_data("u_lax_friedrich_x.txt") # Reference solution
@@ -56,8 +58,8 @@ def V_ro(ro):
 
 
 def s(U, m, n, h):
-    u1 = [0] * (len(m)-1)
-    u2 = [0] * (len(m)-1)
+    u1 = [0]*(len(m)-1)
+    u2 = [0]*(len(m)-1)
     for i in range(1, len(m) - 1):
         u1[i] = q(n * k) * phi((m[i] * h) - (L / 2))
         u2[i] = ((V_ro(U[0, m[i]]) - U[1, m[i]]) / tau)
@@ -93,24 +95,29 @@ def x_convergence(h):
         u_next[1, 0] = initial_velocity
         u_next[:, len(x)-1] = u_next[:, len(x)-2]
         u = u_next
-    error = 0
+    error = np.zeros(len(u[0]))
     print("length of reference:",len(ref_sol[0]))
     print("lenght of u:",len(u[0]))
     relative_discretization = int((len(ref_sol[0])-1)/(len(u[0])-1))
     print("relationship:", relative_discretization)
     for i in range(len(u[0])):
-        error += u[0][i]-ref_sol[0][i*relative_discretization]
-        print(i/len(u[0]), ((i*relative_discretization)/len(ref_sol[0])))
+        error[i] = u[0][i]-ref_sol[0][i*relative_discretization]
+        #print(i/(len(u[0])-1), i*relative_discretization/(len(ref_sol[0])-1))
+        #print("reference:", ref_sol[0][i*relative_discretization])
+        #print(relative_discretization*i)
+        #print(len(u[0])*i/(len(u[0])), (len(ref_sol[0])-1)*(len(u[0])-1)*((i*relative_discretization)/(len(ref_sol[0])-1)-(i/len(u[0]))))
+        #print(i/(len(u[0]-1)), (((i*relative_discretization)/(len(ref_sol[0])-1))-(i/len(u[0]))))
 
-    return np.sqrt(h)*np.linalg.norm(error)
+    return np.sqrt(k*h)*np.linalg.norm(ord=2, x=error)
 
 if __name__ == "__main__":
     for i in range(number_of_discretizations):
-        print("h:",h_values[i])
+        print("h:", h_values[i])
         errors[i] = x_convergence(h_values[i])
-        #print(i)
+        print("feil:",errors[i])
     plt.loglog(h_values, errors)
     plt.xlabel("Step length")
+    #plt.grid()
     plt.ylabel("Error")
     plt.show()
 

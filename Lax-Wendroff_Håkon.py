@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+
 """
 h = 0.037
 k = 0.0001
@@ -54,7 +55,7 @@ def s_vec(U, m, n): # m is a vector
     u1 = [0]*(len(x))
     u2 = [0]*(len(x))
 
-    for i in range(1,len(x)):
+    for i in range(1,len(x)-1):
         u1[i] = q(n*k)*phi((m[i]*h)-(L/2))
         u2[i] = ((V_ro(U[0, m[i]]) - U[1, m[i]])/tau)
     return np.array([u1, u2])
@@ -87,6 +88,7 @@ for n in range(N):
     s_next = s_vec(u, list(range(1,len(x))), n)
     f_next = f_u(u, list(range(1,len(x))))
     print(u)
+
     for m in range(1, len(x) - 1):
 
         u_half[0, m] = ((u[0, m]+u[0, m+1])-(k/h)*(f_next[0][m]-f_next[0][m-1])+(k/2)*(s_next[0][m-1]+s_next[0][m]))/2
