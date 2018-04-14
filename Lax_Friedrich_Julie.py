@@ -56,8 +56,8 @@ def s(U,m,n):
 
 def f_u(U,m):
     u1 = U[0,m]*U[1,m]
-    u2 = 1/2*(U[1,m]**2) + (c_0**2)*np.log(U[0,m])
-    return np.array([u1,u2])
+    u2 = (1/2)*(U[1,m]**2) + (c_0**2)*np.log(U[0,m])
+    return np.array([u1, u2])
 
 u = np.zeros([2,len(x)+1]) #2 x M
 u_next = np.zeros([2,len(x)+1])
