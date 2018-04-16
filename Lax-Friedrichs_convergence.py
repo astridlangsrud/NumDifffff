@@ -44,7 +44,6 @@ def f_u(U,m):
 
 
 
-
 a = 9
 b = 12
 error = np.zeros(b-a)
