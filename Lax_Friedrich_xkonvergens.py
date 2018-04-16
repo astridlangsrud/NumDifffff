@@ -20,10 +20,11 @@ rho_up = 20
 N = 10000
 
 """
+# Lager referanseløsning for Lax-Friedrich
 
-h = 5
+h = 2
 k = 10**-4
-L = 10**4
+L = 2**13
 x = np.linspace(-L / 2, L / 2, int(L / h) + 1)
 sigma = 56.7
 tau = 0.5
@@ -94,9 +95,10 @@ for n in range(N):
     if (n % (N / 10) == 0):
         plt.plot(x, u[0][:-1])
         plt.show()
+
 if __name__ == "__main__":
-    rw.write_data(u, "u_lax_friedrich_x.txt")
-    a = rw.read_data("u_lax_friedrich_x.txt")
+    rw.write_data(u, "u_lax_friedrich_x2.txt")
+    a = rw.read_data("u_lax_friedrich_x2.txt")
     print(a)
 
     # plt.plot(x,u[0][:-1])
