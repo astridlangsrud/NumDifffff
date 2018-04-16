@@ -19,14 +19,15 @@ f_rmp = 121
 rho_up = 20
 N = 1000
 """
-# Lager konvergensplot for Lax-Wendroff
-h_values = [2**(i) for i in range(3, 12)]
+# Lager konvergensplot for Lax-Wendroff i x-retning
+
+h_values = [2**i for i in range(6, 12)]
 number_of_discretizations = len(h_values)
 errors = np.zeros(number_of_discretizations) # The difference between the estimated solution and the reference solution
 ref_sol = rw.read_data("u_lax_wendroff_x.txt") # Reference solution
+
 k = 10**-4
 L = 2**13
-
 sigma = 300
 tau = 0.5
 V_0 = 2000
@@ -57,14 +58,14 @@ def s(U,m,n,h):
 
 def f_u(U,m):
     u1 = U[0,m]*U[1,m]
-    u2 = 1/2*(U[1,m]**2) + (c_0**2)*np.log(U[0,m])
+    u2 = (1/2)*(U[1,m]**2) + (c_0**2)*np.log(U[0,m])
     return np.array([u1,u2])
 
 def x_convergence(h):
     x = np.linspace(-L / 2, L / 2, int(L / h) + 1)
-    u = np.zeros([2,len(x)]) #2 x M
-    u_next = np.zeros([2,len(x)])
-    u_half = np.zeros([2,len(x)])
+    u = np.zeros([2,len(x)+1])
+    u_next = np.zeros([2,len(x)+1])
+    u_half = np.zeros([2,len(x)+1])
     initial_velocity = V_ro(rho_up)
     u_half[0,:] = rho_up
     u_half[1,:] = initial_velocity
@@ -73,11 +74,12 @@ def x_convergence(h):
     u_next[0,:] = rho_up
     u_next[1,:] = initial_velocity
     for n in range(N):
-        #u[:,len(x)] = u[:,len(x)-1]
-        #u[:,0] = u[:,1]
-        for m in range(1,len(x)-2):
+        if n % 100 == 0:
+            print(n)
+
+        for m in range(1,len(x)-1):
             s_next = s(u,m,n,h)
-            s_next_p1 = s(u, m+1, n,h)
+            s_next_p1 = s(u, m+1, n, h)
             f_next = f_u(u,m) #m-1
             f_next_p1 = f_u(u,m+1) #m+1
             u_half[0,m] = ((u[0,m]+ u[0,m+1])/2) -(k/(2*h))*(f_next_p1[0]-f_next[0])+((k/2)*(s_next[0]+s_next_p1[0]))
@@ -93,21 +95,21 @@ def x_convergence(h):
             #print(((u[1,m-1]+ u[1,m+1])/2),(k/(2*h))*(f_next_p1[1]-f_next_m1[1]),(k*s_next[1]))
         u_next[0,0] = u_next[0,1] -(u_next[0,2]-u_next[0,1])
         u_next[1,0] = u_next[1,1] - (u_next[1,2]-u_next[1,1])
-        print(n, len(x), u_next[0, len(x)])
+
         u_next[0, len(x)] = u_next[0, len(x)-1]+(u_next[0,len(x)-1]-u_next[0, len(x)-2])
         u_next[1, len(x)] = u_next[1, len(x)-1]+(u_next[1,len(x)-1]-u_next[1, len(x)-2])
         u = u_next
         #u[:, len(x)] = u[:, len(x) - 1]
         #u[:, 0] = u[:, 1]
-        error = np.zeros(len(u[0]))
-        print("length of reference:", len(ref_sol[0]))
-        print("lenght of u:", len(u[0]))
-        relative_discretization = int((len(ref_sol[0]) - 1) / (len(u[0]) - 1))
-        print("relationship:", relative_discretization)
-        for i in range(len(u[0])):
-            error[i] = u[0][i] - ref_sol[0][i * relative_discretization]
-            # print("reference:", ref_sol[0][i*relative_discretization])
-        return np.sqrt(k * h) * np.linalg.norm(ord=2, x=error)
+    error = np.zeros(len(u[0]))
+    print("length of reference:", len(ref_sol[0]))
+    print("lenght of u:", len(u[0]))
+    relative_discretization = int((len(ref_sol[0]) - 1) / (len(u[0]) - 2))
+    print("relationship:", ((len(ref_sol[0]) - 1) / (len(u[0]) - 2)))
+    for i in range(len(u[0])-1):
+        error[i] = u[0][i] - ref_sol[0][i * relative_discretization]
+        # print("reference:", ref_sol[0][i*relative_discretization])
+    return np.sqrt(k * h) * np.linalg.norm(ord=2, x=error)
 
 
 if __name__ == "__main__":
