@@ -12,14 +12,14 @@ V_0 = 2000
 rho_hat = 0.14
 E = 100
 c_0 = 900
-mu = 10000
+mu = 10
 f_up = 32.5
 f_rmp = 2.166 #3.7
 rho_up = 0.02
 #N = 10**5
 
 def q(t):
-    return 121
+    return f_rmp
 
 def phi(x):
 
@@ -49,6 +49,7 @@ b = 12
 error = np.zeros(b-a)
 k_vec = np.zeros(b-a)
 ref = rw.read_data("ber1.txt")
+index = 0
 for i in range(a,b): #16
     k = 2**(-i)
     N = int(10/k)
@@ -61,32 +62,23 @@ for i in range(a,b): #16
     u_next[0,:] = rho_up
     u_next[1,:] = initial_velocity
     for n in range(N):
-    
         f = f_u(u, range(1,len(x)+1))
         s_next = s(u, range(1,len(x)+1),n)
-    
         for m in range(1,len(x)-1):
             u_next[0,m] = ((u[0,m-1]+ u[0,m+1])/2) -(k/(2*h))*(f[0,m+1]-f[0,m-1])+(k*s_next[0,m])
-            u_next[1,m] = ((u[1,m-1]+ u[1,m+1])/2) -(k/(2*h))*(f[1,m+1]-f[1,m-1])+(k*s_next[1,m]) + ((k/(h**2))*(u[1,m+1]-2*u[1,m]+u[1,m-1]))
+            u_next[1,m] = ((u[1,m-1]+ u[1,m+1])/2) -(k/(2*h))*(f[1,m+1]-f[1,m-1])+(k*s_next[1,m]) + ((k/(h**2))*(u[1,m+1]-2*u[1,m]+u[1,m-1]))*mu/(u[0,m])               
         u_next[0,0] = rho_up
         u_next[1,0] = initial_velocity
         u_next[:, len(x)] = u_next[:, len(x) - 1]
         u = u_next
         
-        plt.plot(x,u[0][:-1])
-        plt.show()
-    
-    error[i+1] = np.linalg.norm(np.subtract(ref[0,:],u[0,:]), 2)**np.sqrt(h)
-    k_vec[i+1] = k  
+    plt.plot(x,u[0][:-1])
+    plt.show()
+    rw.write_data(u,"ut1.txt")
+    a = rw.read_data("ut1.txt")
+    error[index] = np.linalg.norm(np.subtract(ref[0,:],u[0,:]), 2)**np.sqrt(h)
+    k_vec[index] = k  
+    index += 1
 plt.figure()
 plt.loglog(k_vec,error)
 plt.show()
-        
-        
-        
-        
-        
-
-
-
-
