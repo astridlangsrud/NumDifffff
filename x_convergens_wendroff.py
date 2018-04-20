@@ -21,13 +21,17 @@ N = 1000
 """
 # Lager konvergensplot for Lax-Wendroff i x-retning
 
-h_values = [2**i for i in range(6, 12)]
+#h_values = [2**i for i in range(4, 8)]
+h_values = [2**i for i in range(3,9)]
+#h_values = [10, 20, 50, 100, 200, 500]
 number_of_discretizations = len(h_values)
-errors = np.zeros(number_of_discretizations) # The difference between the estimated solution and the reference solution
-ref_sol = rw.read_data("u_lax_wendroff_x.txt") # Reference solution
-
-k = 10**-4
+errors1 = np.zeros(number_of_discretizations) # Error in 1-norm
+errors2 = np.zeros(number_of_discretizations) # Error in 2-norm
+ref_sol = rw.read_data("u_lax_wendroff_x2.txt") # Reference solution
 L = 2**13
+ref_sol_points = L/(len(ref_sol[0])-1)
+k = 10**-4
+
 sigma = 300
 tau = 0.5
 V_0 = 2000
@@ -75,7 +79,7 @@ def x_convergence(h):
     u_next[1,:] = initial_velocity
     for n in range(N):
         if n % 100 == 0:
-            print(n)
+            print(int(100 * n / N), "%")
 
         for m in range(1,len(x)-1):
             s_next = s(u,m,n,h)
@@ -84,15 +88,14 @@ def x_convergence(h):
             f_next_p1 = f_u(u,m+1) #m+1
             u_half[0,m] = ((u[0,m]+ u[0,m+1])/2) -(k/(2*h))*(f_next_p1[0]-f_next[0])+((k/2)*(s_next[0]+s_next_p1[0]))
             u_half[1,m] = ((u[1,m]+ u[1,m+1])/2) -(k/(2*h))*(f_next_p1[1]-f_next[1])+((k/2)*(s_next[1]+s_next_p1[1]))
-            f_half_p1 = f_u(u_half,m) #Tror ikke det skal være m+1
+            f_half_p1 = f_u(u_half,m)
             f_half_m1 = f_u(u_half,m-1)
             s_half_p1 = s(u_half, m, n,h)
             s_half_m1 = s(u_half, m-1, n,h)
             u_next[0,m]= u[0,m] -(k/(2*h))*(f_half_p1[0]-f_half_m1[0])+((k/2)*(s_half_p1[0]+s_half_m1[0]))
             u_next[1,m] = u[1,m] -(k/(2*h))*(f_half_p1[1]-f_half_m1[1])+((k/2)*(s_half_p1[1]+s_half_m1[1]))
 
-            #print(((u[0, m - 1] + u[0, m + 1]) / 2), (k / (2 * h)) * (f_next_p1[0] - f_next_m1[0]), (k * s_next[0]))
-            #print(((u[1,m-1]+ u[1,m+1])/2),(k/(2*h))*(f_next_p1[1]-f_next_m1[1]),(k*s_next[1]))
+
         u_next[0,0] = u_next[0,1] -(u_next[0,2]-u_next[0,1])
         u_next[1,0] = u_next[1,1] - (u_next[1,2]-u_next[1,1])
 
@@ -101,25 +104,40 @@ def x_convergence(h):
         u = u_next
         #u[:, len(x)] = u[:, len(x) - 1]
         #u[:, 0] = u[:, 1]
-    error = np.zeros(len(u[0]))
+    plt.plot(x, u[0,:-1])
+    plt.show()
+    error = np.zeros(len(ref_sol[0]))
     print("length of reference:", len(ref_sol[0]))
     print("lenght of u:", len(u[0]))
-    relative_discretization = int((len(ref_sol[0]) - 1) / (len(u[0]) - 2))
-    print("relationship:", ((len(ref_sol[0]) - 1) / (len(u[0]) - 2)))
-    for i in range(len(u[0])-1):
-        error[i] = u[0][i] - ref_sol[0][i * relative_discretization]
+    #relative_discretization = int((len(ref_sol[0]) - 1) / (len(u[0]) - 2))
+    #print("relationship:", ((len(ref_sol[0]) - 1) / (len(u[0]) - 2)))
+    for i in range(1, len(ref_sol[0])-1):
+        error[i] = np.interp(ref_sol_points*i-L/2, x, u[0,:-1]) - ref_sol[0][i]
         # print("reference:", ref_sol[0][i*relative_discretization])
-    return np.sqrt(k * h) * np.linalg.norm(ord=2, x=error)
+    return h*np.linalg.norm(ord=1, x=error), np.sqrt(h)*np.linalg.norm(ord = 2, x = error)
 
 
 if __name__ == "__main__":
     for i in range(number_of_discretizations):
         print("h:", h_values[i])
-        errors[i] = x_convergence(h_values[i])
-        print("feil:",errors[i],"\n")
-    plt.loglog(h_values, errors)
-    plt.xlabel("Step length")
-    plt.grid()
-    plt.title("h=2^i, i = 3, ... 11")
+        errors1[i],errors2[i] = x_convergence(h_values[i])
+        print("feil i 1-norm:",errors1[i])
+        print("feil i 2-norm:",errors2[i])
+        if i != 0:
+            print("slope in 1-norm:", (errors1[i]/errors1[i-1])*h_values[i-1]/h_values[i])
+            print("slope in 2-norm:", (errors2[i]/errors2[i-1])*h_values[i-1]/h_values[i], "\n")
+    print("slope between first and last point in 1-norm:", (errors1[-1] / errors1[0]) * h_values[0] / h_values[-1])
+    print("slope between first and last point in 2-norm:", (errors2[-1] / errors2[0]) * h_values[0] / h_values[-1])
+    h_values = np.array(h_values)
+    plt.loglog(h_values, errors1)
+    #plt.loglog(h_values, errors2, "r")
+    #plt.loglog(h_values, [h_values[i] for i in range,'r--')
+    plt.loglog(h_values, errors1[0]/(h_values[0])*h_values, "r--")
+    #plt.loglog(h_values, errors1[0]/((h_values[0]**2))*np.square(h_values), "b--")
+
+    #plt.loglog(h_values, errors2[0]/((h_values[0]**2))*np.square(h_values), "r--")
+    plt.xlabel("h")
+    plt.legend(["Error in 1-norm","1st order reference"])
     plt.ylabel("Error")
+
     plt.show()
