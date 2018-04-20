@@ -2,30 +2,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 import readwrite as rw
 
-"""
-h = 0.037
-k = 0.0001
-L = 10
-x = np.linspace(-L/2,L/2,int(L/h)+1)
-sigma = 0.054
-tau = 1/120
-V_0 = 120
-rho_hat = 120
-E = 100
-c_0 = 54
-mu = 600
-f_up = 1948
-f_rmp = 121
-rho_up = 20
-N = 10000
 
-"""
-# Lager referanseløsning for Lax-Wendroff i x-retning
+# This script makes a reference solution for Lax-Wendroff in space
 
+# Constants:
 h = 4
 L = 2**13
-k = 10**(-13)
-N = 2**13
+k = 10**-4
+N = 10**4
 x = np.linspace(-L/2,L/2,int(L/h)+1)
 sigma = 300
 tau = 0.5
@@ -53,10 +37,8 @@ def V_ro(ro):
 
 
 def s(U, m, n):
-
     u1 = q(n * k) * phi((m * h) - (L / 2))
     u2 = ((V_ro(U[0, m]) - U[1, m]) / tau)
-
     return np.array([u1, u2])
 
 
@@ -82,8 +64,8 @@ for n in range(N):
     for m in range(1,len(x)-1):
         s_next = s(u,m,n)
         s_next_p1 = s(u, m+1, n)
-        f_next = f_u(u,m) #m-1
-        f_next_p1 = f_u(u,m+1) #m+1
+        f_next = f_u(u,m)
+        f_next_p1 = f_u(u,m+1)
 
         u_half[0,m] = ((u[0,m] + u[0,m+1])/2) -(k/(2*h))*(f_next_p1[0]-f_next[0])+((k/2)*(s_next[0]+s_next_p1[0]))
         u_half[1,m] = ((u[1,m] + u[1,m+1])/2) -(k/(2*h))*(f_next_p1[1]-f_next[1])+((k/2)*(s_next[1]+s_next_p1[1]))
@@ -94,22 +76,17 @@ for n in range(N):
         u_next[0,m]= u[0,m] -(k/(2*h))*(f_half_p1[0]-f_half_m1[0])+((k/2)*(s_half_p1[0]+s_half_m1[0]))
         u_next[1,m] = u[1,m] -(k/(2*h))*(f_half_p1[1]-f_half_m1[1])+((k/2)*(s_half_p1[1]+s_half_m1[1]))
 
-        #print(((u[0, m - 1] + u[0, m + 1]) / 2), (k / (2 * h)) * (f_next_p1[0] - f_next_m1[0]), (k * s_next[0]))
-        #print(((u[1,m-1]+ u[1,m+1])/2),(k/(2*h))*(f_next_p1[1]-f_next_m1[1]),(k*s_next[1]))
     u_next[0,0] = u_next[0,1] -(u_next[0,2]-u_next[0,1])
     u_next[1,0] = u_next[1,1] - (u_next[1,2]-u_next[1,1])
     u_next[0, len(x)] = u_next[0, len(x)-1]+(u_next[0,len(x)-1]-u_next[0, len(x)-2])
     u_next[1, len(x)] = u_next[1, len(x) - 1] + (u_next[1, len(x) - 1] - u_next[1, len(x) - 2])
     u = u_next
 
-    #if (n % (N / 10) == 0):
-    #    plt.plot(x, u[0][:-1])
-    #    plt.show()
+
 
 if __name__ == "__main__":
-    rw.write_data(u, "u_lax_wendroff_x2.txt")
-    a = rw.read_data("u_lax_wendroff_x2.txt")
+    rw.write_data(u, "Reference solution, Lax-Wendroff, x-convergence.txt") # Writing the reference solution to file
+    a = rw.read_data("Reference solution, Lax-Wendroff, x-convergence.txt")
     print(a)
 
-    plt.plot(x,ref_sol[0])
-    plt.show()
+

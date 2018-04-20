@@ -22,7 +22,7 @@ N = 10000
 """
 # Lager referanseløsning for Lax-Friedrich
 
-h = 128
+h = 1
 k = 10**-4
 L = 2**13
 x = np.linspace(-L / 2, L / 2, int(L / h) + 1)
@@ -54,10 +54,9 @@ def V_ro(ro):
 def s(U, m, n):
     u1 = [0] * (len(x) - 1)
     u2 = [0] * (len(x) - 1)
-    for i in range(1, len(x) - 1):
+    for i in range(0, len(x) - 1):
         u1[i] = q(n * k) * phi((m[i] * h) - (L / 2))
         u2[i] = ((V_ro(U[0, m[i]]) - U[1, m[i]]) / tau)
-
     return np.array([u1, u2])
 
 
@@ -67,8 +66,8 @@ def f_u(U, m):
     return np.array([u1, u2])
 
 
-u = np.zeros([2, len(x) + 1])  # 2 x M
-u_next = np.zeros([2, len(x) + 1])
+u = np.zeros([2, len(x)+1])  # 2 x M
+u_next = np.zeros([2, len(x)+1])
 initial_velocity = V_ro(rho_up)
 u[0, :] = rho_up
 u[1, :] = initial_velocity
@@ -77,10 +76,10 @@ u_next[1, :] = initial_velocity
 for n in range(N):
     if n % 100 == 0:
         print(n)
-    f = f_u(u, range(1, len(x) + 1))
-    s_next = s(u, range(1, len(x) + 1), n)
-    print("length of x:",len(x))
-    print("length of u:",len(u[0]))
+    f = f_u(u, range(0, len(x)+1)) # length: L/h
+    s_next = s(u, range(0, len(x) - 1), n) # length: L/h
+    #print("length of x:",len(x))
+    #print("length of u:",len(u[0]))
     for m in range(1, len(x) - 1):
         u_next[0, m] = ((u[0, m - 1] + u[0, m + 1]) / 2) - (k / (2 * h)) * (f[0, m + 1] - f[0, m - 1]) + (
                     k * s_next[0, m])
@@ -99,9 +98,9 @@ for n in range(N):
 
 if __name__ == "__main__":
     print("hei")
-    #rw.write_data(u, "u_lax_friedrich_x2.txt")
-    #a = rw.read_data("u_lax_friedrich_x2.txt")
-    #print(a)
+    rw.write_data(u, "u_lax_friedrich_x3.txt")
+    a = rw.read_data("u_lax_friedrich_x3.txt")
+    print(a)
 
-    # plt.plot(x,u[0][:-1])
-    # plt.show()
+    #plt.plot(x,u[0][:-1])
+    #plt.show()
